@@ -47,7 +47,7 @@
     <div class="col-sm-8 mx-auto">
         <h2 style="margin-bottom: 40px; margin-left: 200px;">Current picture:</h2>
       <img src="qr_pic.jpg" alt="QR Image">
-      <a href="https://myglo.hu/qr">Link</a>
+      <a href="{{link}}">Link</a>
     </div>
   </div>
 </div>
