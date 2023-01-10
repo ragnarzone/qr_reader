@@ -24,7 +24,7 @@ cv2.destroyAllWindows()
 # write template
 
 environment = Environment(loader=FileSystemLoader("./"))
-template = environment.get_template("qr_template.txt")
+template = environment.get_template("qr_template.html")
 
 filename = "qr.html"
 content = template.render(link=a)
