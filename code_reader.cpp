@@ -9,7 +9,7 @@ using namespace std;
 
 int main() {
     /* Open port */ 
-    int USB = open( "/dev/ttyUSB0", O_RDWR| O_NOCTTY );
+    int USB = open( "/dev/ttyUSB0", O_RDWR | O_NOCTTY );
 
     /* Set parameters of port */
 
@@ -26,13 +26,13 @@ int main() {
     tty_old = tty;
 
     /* Set Baud Rate */
-    cfsetospeed (&tty, (speed_t)B115200);
-    cfsetispeed (&tty, (speed_t)B115200);
+    cfsetospeed (&tty, (speed_t)B9600);
+    cfsetispeed (&tty, (speed_t)B9600);
 
     /* Setting other Port Stuff */
     tty.c_cflag     &=  ~PARENB;            // Make 8n1
-    tty.c_cflag     &=  ~CSTOPB;
-    tty.c_cflag     &=  ~CSIZE;
+    tty.c_cflag     &=  ~CSTOPB;                       
+    tty.c_cflag     &=  ~CSIZE;             
     tty.c_cflag     |=  CS8;
 
     tty.c_cflag     &=  ~CRTSCTS;           // no flow control
@@ -50,9 +50,7 @@ int main() {
     }
 
     /* End of parameters setting */
-
-
-
+    
     /* Write into port */
     unsigned char cmd[] = "LON\\r \r";
     int n_written = 0,
@@ -63,32 +61,9 @@ int main() {
         spot += n_written;
     } while (cmd[spot-1] != '\r' && n_written > 0);
 
-    sleep(5);
+    sleep(1);
 
-    /* Read from the port */
-    int n = 0;
-    spot = 0;
-    char buf = '\0';
-
-    /* Whole response*/
-    char response[1024];
-    memset(response, '\0', sizeof response);
-
-    do {
-        n = read( USB, &buf, 1 );
-        sprintf( &response[spot], "%c", buf );
-        spot += n;
-    } while( buf != '\r' && n > 0);
-
-    if (n < 0) {
-        std::cout << "Error reading: " << strerror(errno) << std::endl;
-    }
-    else if (n == 0) {
-        std::cout << "Read nothing!" << std::endl;
-    }
-    else {
-        std::cout << "Response: " << response << std::endl;
-    }
+    
 
     return 0;
 }
