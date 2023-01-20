@@ -9,7 +9,7 @@ using namespace std;
 
 int main() {
     /* Open port */ 
-    int USB = open( "/dev/ttyUSB0", O_RDWR| O_NOCTTY );
+    int USB = open( "/dev/ttyS0", O_RDWR| O_NOCTTY );
 
     /* Set parameters of port */
 
@@ -54,7 +54,7 @@ int main() {
 
 
     /* Write into port */
-    unsigned char cmd[] = "RESET\r";
+    unsigned char cmd[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     int n_written = 0,
         spot = 0;
 

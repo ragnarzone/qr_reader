@@ -1,5 +1,11 @@
 import serial
+import time
 
-ser = serial.Serial('/dev/ttyUSB0')
-ser.baudrate = 9600
-ser.write(b'hello')
+port = serial.Serial("/dev/ttyS0", baudrate = 115200, timeout = 2)
+
+port.write(b"test data")
+
+time.sleep(1)
+
+rcv = port.read(9)
+print(rcv)

@@ -25,45 +25,30 @@ int main() {
     /* Save old tty parameters */
     tty_old = tty;
 
-    /* Set Baud Rate */
-    cfsetospeed (&tty, (speed_t)B9600);
-    cfsetispeed (&tty, (speed_t)B9600);
+    /* Read from the port */
+    int n = 0;
+    int spot = 0;
+    char buf = '\0';
 
-    /* Setting other Port Stuff */
-    tty.c_cflag     &=  ~PARENB;            // Make 8n1
-    tty.c_cflag     &=  ~CSTOPB;                       
-    tty.c_cflag     &=  ~CSIZE;             
-    tty.c_cflag     |=  CS8;
-
-    tty.c_cflag     &=  ~CRTSCTS;           // no flow control
-    tty.c_cc[VMIN]   =  1;                  // read doesn't block
-    tty.c_cc[VTIME]  =  5;                  // 0.5 seconds read timeout
-    tty.c_cflag     |=  CREAD | CLOCAL;     // turn on READ & ignore ctrl lines
-
-    /* Make raw */
-    cfmakeraw(&tty);
-
-    /* Flush Port, then applies attributes */
-    tcflush( USB, TCIFLUSH );
-    if ( tcsetattr ( USB, TCSANOW, &tty ) != 0) {
-        std::cout << "Error " << errno << " from tcsetattr" << std::endl;
-    }
-
-    /* End of parameters setting */
-    
-    /* Write into port */
-    unsigned char cmd[] = "LON\\r \r";
-    int n_written = 0,
-        spot = 0;
+    /* Whole response*/
+    char response[1024];
+    memset(response, '\0', sizeof response);
 
     do {
-        n_written = write( USB, &cmd[spot], 1 );
-        spot += n_written;
-    } while (cmd[spot-1] != '\r' && n_written > 0);
+        n = read( USB, &buf, 1 );
+        sprintf( &response[spot], "%c", buf );
+        spot += n;
+    } while( buf != '\r' && n > 0);
 
-    sleep(1);
-
-    
+    if (n < 0) {
+        std::cout << "Error reading: " << strerror(errno) << std::endl;
+    }
+    else if (n == 0) {
+        std::cout << "Read nothing!" << std::endl;
+    }
+    else {
+        std::cout << "Response: " << response << std::endl;
+    }
 
     return 0;
 }
