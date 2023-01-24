@@ -29,6 +29,8 @@ int main() {
     cfsetospeed (&tty, (speed_t)B115200);
     cfsetispeed (&tty, (speed_t)B115200);
 
+    tty.c_cflag     |=  ~PARENB;
+    
     /* Make raw */
     cfmakeraw(&tty);
 

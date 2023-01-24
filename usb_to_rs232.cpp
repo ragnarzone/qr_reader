@@ -30,15 +30,7 @@ int main() {
     cfsetispeed (&tty, (speed_t)B115200);
 
     /* Setting other Port Stuff */
-    tty.c_cflag     &=  ~PARENB;            // Make 8n1
-    tty.c_cflag     &=  ~CSTOPB;
-    tty.c_cflag     &=  ~CSIZE;
-    tty.c_cflag     |=  CS8;
-
-    tty.c_cflag     &=  ~CRTSCTS;           // no flow control
-    tty.c_cc[VMIN]   =  1;                  // read doesn't block
-    tty.c_cc[VTIME]  =  5;                  // 0.5 seconds read timeout
-    tty.c_cflag     |=  CREAD | CLOCAL;     // turn on READ & ignore ctrl lines
+    
 
     /* Make raw */
     cfmakeraw(&tty);
@@ -49,12 +41,20 @@ int main() {
         std::cout << "Error " << errno << " from tcsetattr" << std::endl;
     }
 
+    tty.c_cflag     |=  PARENB;            // Make
+    tty.c_cflag     &=  ~CSTOPB;
+    tty.c_cflag     &=  ~CSIZE;
+    tty.c_cflag     |=  CS8;
+
+    tty.c_cflag &= ~CRTSCTS;
+    tty.c_cflag |= CREAD | CLOCAL;
+
     /* End of parameters setting */
 
 
 
     /* Write into port */
-    unsigned char cmd[] = "RESET\r";
+    unsigned char cmd[] = "LON\r";
     int n_written = 0,
         spot = 0;
 
