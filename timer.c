@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 
 // Linux headers
 #include <fcntl.h>
@@ -8,51 +9,26 @@
 #include <unistd.h> 
 
 int main() {
-  // Open the serial port. 
-  int serial_port = open("/dev/ttyUSB0", O_RDWR);
-
-  // Create new termios struct
-  struct termios tty;
-
-  // Read in existing settings, and handle any error
-  if(tcgetattr(serial_port, &tty) != 0) {
-      printf("Error %i from tcgetattr: %s\n", errno, strerror(errno));
-      return 1;
-  }
-
-    tty.c_cflag     |=  PARENB;
-    tty.c_cflag     &=  ~CSTOPB;
-    tty.c_cflag     &=  ~CSIZE;
-    tty.c_cflag     |=  CS8;
-
-    tty.c_cc[VMIN]   =  1;                  // read doesn't block
-    tty.c_cc[VTIME]  =  5;                  // 0.5 seconds read timeout
-    tty.c_cflag &= ~CRTSCTS;
-    tty.c_cflag |= CREAD | CLOCAL;
-
   
-  cfsetispeed(&tty, B115200);
-  cfsetospeed(&tty, B115200);
+    int msec = 0, trigger = 100;
+    clock_t before = clock();
+    int iterations = 0;
 
-  // Save tty settings, also checking for error
-  if (tcsetattr(serial_port, TCSANOW, &tty) != 0) {
-      printf("Error %i from tcsetattr: %s\n", errno, strerror(errno));
-      return 1;
-  }
+do {
+  /*
+   * Do something to busy the CPU just here while you drink a coffee
+   * Be sure this code will not take more than `trigger` ms
+   */
 
-  // Write to serial port
-  //unsigned char msg[4] = "LON\r";
-  //write(serial_port, msg, sizeof(msg));
+   printf("message");
 
-  /* Write into port */
-    unsigned char cmd[] = "LON\r";
-    int n_written = 0;
-    int spot = 0;
+  clock_t difference = clock() - before;
+  msec = difference * 1000 / CLOCKS_PER_SEC;
+  iterations++;
+} while ( msec < trigger );
 
-    do {
-        n_written = write( serial_port, &cmd[spot], 1 );
-        spot += n_written;
-    } while (cmd[spot-1] != '\r' && n_written > 0);
+printf("Time taken %d seconds %d milliseconds (%d iterations)\n",
+  msec/1000, msec%1000, iterations);
 
   return 0;
 }

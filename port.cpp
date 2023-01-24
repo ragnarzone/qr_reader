@@ -6,18 +6,7 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <termios.h>
-#include <unistd.h>
-
-
-void *timeoutThread(void *vargp)
-{
-
-    sleep(2);
-    unsigned char message[] = "LOFF\r";
-    write(serial_port, message, sizeof(message));
-    return NULL;
-}
-
+#include <unistd.h> 
 
 int main() {
   // Open the serial port. 
@@ -53,11 +42,6 @@ int main() {
   }
 
     //----------------------------------------------//
-
-
-  pthread_t thread_id;
-  pthread_create(&thread_id, NULL, timeoutThread, serial_port);
-  pthread_join(thread_id, NULL);
 
   // Write to serial port
   unsigned char msg[6] = "LON\r";
