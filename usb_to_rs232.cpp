@@ -49,6 +49,9 @@ int main() {
     tty.c_cflag &= ~CRTSCTS;
     tty.c_cflag |= CREAD | CLOCAL;
 
+    tty.c_cc[VTIME] = 10;    // Wait for up to 1s (10 deciseconds), returning as soon as any data is received.
+    tty.c_cc[VMIN] = 0;
+
     /* End of parameters setting */
 
 

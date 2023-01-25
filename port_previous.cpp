@@ -1,9 +1,6 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <thread>
-#include <iostream>
 
 // Linux headers
 #include <fcntl.h>
@@ -11,24 +8,10 @@
 #include <termios.h>
 #include <unistd.h>
 
-using namespace std;
-
-void read_timeout(int timeout, int serial_port)
-{
-  sleep(timeout);
-  system("echo \"LOFF\" > /dev/ttyUSB0");
-  system("echo \"LOFF\" > /dev/ttyUSB0");
-}
 
 int main() {
-
-  int timeout = 3;   // timeout after which camera stops reading
-
   // Open the serial port. 
   int serial_port = open("/dev/ttyUSB0", O_RDWR);
-
-  // start timeout thread
-  thread th1(read_timeout, timeout, serial_port);
 
   // Create new termios struct
   struct termios tty;
@@ -39,9 +22,6 @@ int main() {
       return 1;
   }
 
-    //tty.c_cc[VTIME] = 30;    // Wait
-    //tty.c_cc[VMIN] = 0;
-
     tty.c_cflag     |=  PARENB;
     tty.c_cflag     &=  ~PARODD;
 
@@ -51,9 +31,8 @@ int main() {
 
     tty.c_cflag &= ~CRTSCTS;
     tty.c_cflag |= CREAD | CLOCAL;
-    tty.c_lflag |= ICANON;       // canonical
 
-
+  
   cfsetispeed(&tty, B115200);
   cfsetospeed(&tty, B115200);
 
@@ -65,8 +44,9 @@ int main() {
 
     //----------------------------------------------//
 
+
   // Write to serial port
-  unsigned char msg[] = "LON\r";
+  unsigned char msg[6] = "LON\r";
   write(serial_port, msg, sizeof(msg));
   
   // Create buffer
@@ -84,6 +64,9 @@ int main() {
   
   // Output message
   printf("Read %i bytes. Received message: %s", num_bytes, read_buf);
+
+  //strcpy(msg, "LOFF\r");
+  //write(serial_port, msg, sizeof(msg));
 
   return 0;
 }
