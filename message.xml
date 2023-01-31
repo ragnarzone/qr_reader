@@ -1,0 +1,35 @@
+---BOUNDARY-
+Content-Type: text/xml
+Content-Transfer-Encoding: 8bit
+Content-Length: 0
+
+<?xml version="1.0" encoding="UTF-8"?>
+<soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
+<soap-env:Header>
+<ipc2502mh:MessageInfo
+ xmlns:ipc2501mh="http://webstds.ipc.org/2501/MessageInfo.xsd"
+ soap-env:actor="Jabil.TIS.CAMXSwitch.Listener"
+ sender="some sender" 
+ destination="Jabil.TIS.CAMXSwitch.Listener" 
+ dateTime="2023-01-31T14:41:24.+01:00"
+ messageSchema="http://webstds.ipc.org/2541/ItemIdentifierRead.xsd"
+ messageId="CAMX-API"
+ />
+</soap-env:Header>
+</soap-env:Envelope>
+
+---BOUNDARY-
+Content-Type: text/xml
+Content-Transfer-Encoding: 8bit
+Content-ID: CAMX-API
+Content-Length: 0
+
+<?xml version="1.0" encoding="UTF-8"?>
+<ItemIdentifierRead
+	dateTime="2023-01-31T14:41:24.+01:00"
+	itemInstanceId="12345"
+	laneId="some string"
+	zoneId="some string"
+	scannerId="some string"
+/>
+---BOUNDARY---
