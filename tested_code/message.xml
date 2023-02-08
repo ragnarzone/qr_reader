@@ -13,9 +13,9 @@ Content-Length: 959
  soap-env:actor="C120"
  sender="C120" 
  destination="Jabil.TIS.LineControl" 
- dateTime="2023-02-08T10:15:52.+01:00"
+ dateTime="2023-02-08T11:58:19.+01:00"
  messageSchema="http://webstds.ipc.org/2541/ItemIdentifierRead.xsd"
- messageId="CAMX-API Georgia Tech2023-02-08T10:15:52.+01:00"
+ messageId="CAMX-API Georgia Tech2023-02-08T11:58:19.+01:00"
  />
 </soap-env:Header>
 </soap-env:Envelope>
@@ -23,12 +23,12 @@ Content-Length: 959
 ---BOUNDARY-
 Content-Type: text/xml
 Content-Transfer-Encoding: 8bit
-Content-ID: CAMX-API Georgia Tech2023-02-08T10:15:52.+01:00
+Content-ID: CAMX-API Georgia Tech2023-02-08T11:58:19.+01:00
 Content-Length: 959
 
 <?xml version="1.0" encoding="UTF-8"?>
 <ItemIdentifierRead
-dateTime="2023-02-08T10:15:52.+01:00"
+dateTime="2023-02-08T11:58:19.+01:00"
 scannerId="1234"
 itemInstanceId="1234"
 laneId="1"
