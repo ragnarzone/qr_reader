@@ -1,10 +1,12 @@
 #!/usr/bin/python3
 from datetime import datetime
 import requests
+import os
+import subprocess
+import time
 
 
 #http://hutiss0stgweb81/Linecontrol/camxhandler.ashx
-
 
 
 def send_message():
@@ -22,7 +24,7 @@ def generate_message(itemInstanceId):
     zoneId="1"
     scannerId="1234"
 
-    contentLength = "959"
+    contentLength = str(955 + len(itemInstanceId))
     sender = "C120"
     actor = "C120"
 
@@ -69,5 +71,7 @@ def generate_message(itemInstanceId):
     file1.writelines(toWrite)
     file1.close()
 
-generate_message("1234")
+
+itemIdFile = open("/var/www/html/qr_reader/tested_code/out.txt", "r")
+generate_message(itemIdFile.readline())
 send_message()
